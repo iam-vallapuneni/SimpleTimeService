@@ -1,17 +1,12 @@
-# Use a lightweight base image
-FROM python:3.9-slim
+FROM python:3.11-slim
+ENV PORT 8000
+EXPOSE 8000
+WORKDIR /usr/src/app
 
-# Set a non-root user
-RUN useradd -m appuser
-USER appuser
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Set working directory
-WORKDIR /app
-
-# Copy files and install dependencies
 COPY . .
-RUN pip install flask
 
-# Expose the port and start the app
-EXPOSE 5000
-CMD ["python", "server.py"]
+ENTRYPOINT ["python"]
+CMD ["app.py"]
